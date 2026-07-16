@@ -10,7 +10,7 @@
     <string name="password_error_length">Длина пароля должна быть не менее %1$d</string>
     <string name="password_error_mismatch">Пароли не совпадают</string>
     <string name="password_error_wrong">Неверный пароль</string>
-    <string name="password_input_message">Введите свой пароль SecLock, чтобы разблокировать хранилище SecLock</string>
+    <string name="password_input_message">Введите пароль для доступа к хранилищу.</string>
     <string name="password_input_action">Разблокировать</string>
     <string name="password_input_biometric_message">Аутентифицироваться для разблокировки хранилища SecLock</string>
     <string name="password_input_biometric_fallback">Использовать пароль</string>
@@ -36,6 +36,8 @@
     <string name="shortcut_config_long">Конфигурация</string>
     <string name="shortcut_config_short">Настроить</string>
     <string name="shortcut_config_disabled">Конфигурация (отключено)</string>
+    <string name="shortcut_quick_lock_long">Быстрая блокировка</string>
+    <string name="shortcut_quick_lock_short">Быстрая блокировка</string>
     <string name="configuration_label">Конфигурация</string>
     <string name="configuration_shortcut">Показать ярлык в списке приложений</string>
     <string name="configuration_protection">Защита</string>
@@ -44,5 +46,8 @@
     <string name="configuration_storage_lock">Заблокировать доступ к хранилищу</string>
     <string name="configuration_storage_unlock">Разблокировать доступ к хранилищу</string>
     <string name="configuration_storage_unlock_biometric">Разрешить разблокировку хранилища с помощью биометрической аутентификации</string>
-    <string name="configuration_storage_lock_auto">Автоматически блокировать доступ через 15 минут</string>
+    <string name="configuration_storage_lock_auto">Автоматически блокировать доступ</string>
+    <string name="configuration_storage_lock_auto_delay">Задержка блокировки: %d мин.</string>
+    <string name="configuration_lock_immediately">Немедленно</string>
+    <string name="configuration_credits">Изначально создано &lt;b>2bllw8&lt;/b>.<br/>Ответвлено и изменено &lt;b>Abdullah Bari&lt;/b>.<br/>Версия %1$s</string>
 </resources>

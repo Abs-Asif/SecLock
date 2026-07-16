@@ -16,4 +16,16 @@
             android:targetClass="monalisa.love.abdullah.config.ConfigurationActivity"
             android:targetPackage="monalisa.love.abdullah" />
     </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_lock"
+        android:shortcutId="quick_lock"
+        android:shortcutLongLabel="@string/shortcut_quick_lock_long"
+        android:shortcutShortLabel="@string/shortcut_quick_lock_short">
+
+        <intent
+            android:action="monalisa.love.abdullah.action.QUICK_LOCK"
+            android:targetClass="monalisa.love.abdullah.shell.LauncherActivity"
+            android:targetPackage="monalisa.love.abdullah" />
+    </shortcut>
 </shortcuts>

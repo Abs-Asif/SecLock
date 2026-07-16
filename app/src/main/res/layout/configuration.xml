@@ -130,6 +130,30 @@
                 tools:text="@string/configuration_storage_lock" />
 
             <View
+                android:id="@+id/configuration_lock_immediately_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="?android:attr/listDivider" />
+
+            <!-- Immediately lock and close -->
+            <TextView
+                android:id="@+id/configuration_lock_immediately"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:minHeight="64dp"
+                android:paddingHorizontal="16dp"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="16sp"
+                android:text="@string/configuration_lock_immediately" />
+
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="16dp"
@@ -173,6 +197,30 @@
                 android:textSize="16sp" />
 
             <View
+                android:id="@+id/configuration_auto_lock_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="?android:attr/listDivider" />
+
+            <!-- Auto lock delay picker -->
+            <TextView
+                android:id="@+id/configuration_auto_lock_delay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableStart="@drawable/ic_timer"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:minHeight="64dp"
+                android:paddingHorizontal="16dp"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="16sp"
+                tools:text="Lock delay: 15 minutes" />
+
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="16dp"
@@ -191,6 +239,41 @@
                 android:text="@string/configuration_storage_unlock_biometric"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Credits Section Header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:text="Credits"
+            android:textAllCaps="true"
+            android:textColor="?android:attr/colorAccent"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <!-- Credits Card Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/card_bg"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/configuration_credits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="14sp"
+                android:lineSpacingMultiplier="1.2"
+                tools:text="Originally created by 2bllw8.\nForked and Modified by Abdullah Bari.\nVersion 1.0" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

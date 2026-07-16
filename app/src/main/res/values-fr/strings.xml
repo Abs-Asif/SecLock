@@ -18,7 +18,7 @@
     <string name="password_error_mismatch">Les mots de passe ne concordent pas</string>
     <string name="password_error_wrong">Mot de passe erroné</string>
 
-    <string name="password_input_message">Taper votre mot de passe pour déverrouiller le stockage SecLock</string>
+    <string name="password_input_message">Saisissez votre mot de passe pour accéder au coffre-fort.</string>
     <string name="password_input_action">Déverrouiller</string>
     <string name="password_input_biometric_message">S\'authentifier pour déverrouiller le stockage SecLock</string>
     <string name="password_input_biometric_fallback">Utiliser le mot de passe</string>
@@ -53,6 +53,8 @@
     <string name="shortcut_config_long">Configuration</string>
     <string name="shortcut_config_short">Configurer</string>
     <string name="shortcut_config_disabled">Configuration (désactivé)</string>
+    <string name="shortcut_quick_lock_long">Verrouillage rapide</string>
+    <string name="shortcut_quick_lock_short">Verrouillage rapide</string>
 
     <string name="configuration_label">Préférence</string>
     <string name="configuration_shortcut">Afficher un raccourci dans la liste des applications</string>
@@ -62,5 +64,8 @@
     <string name="configuration_storage_lock">Verrouiller l\'accès au stockage</string>
     <string name="configuration_storage_unlock">Déverrouiller l\'accès au stockage</string>
     <string name="configuration_storage_unlock_biometric">Permettre le déverrouillage du stockage par accès biométrique</string>
-    <string name="configuration_storage_lock_auto">Verrouiller automatiquement l\'accès après 15 minutes</string>
+    <string name="configuration_storage_lock_auto">Verrouiller automatiquement l\'accès</string>
+    <string name="configuration_storage_lock_auto_delay">Délai de verrouillage : %d minutes</string>
+    <string name="configuration_lock_immediately">Immédiatement</string>
+    <string name="configuration_credits">Créé à l\'origine par &lt;b>2bllw8&lt;/b>.<br/>Forké et modifié par &lt;b>Abdullah Bari&lt;/b>.<br/>Version %1$s</string>
 </resources>

@@ -18,7 +18,7 @@
     <string name="password_error_mismatch">Le password non corrispondono</string>
     <string name="password_error_wrong">Password errata</string>
 
-    <string name="password_input_message">Digita la tua password di SecLock per sbloccare l\'archiviazione</string>
+    <string name="password_input_message">Digita la tua Password per accedere alla cassaforte.</string>
     <string name="password_input_action">Sblocca</string>
     <string name="password_input_biometric_message">Autenticazione per sbloccare l\'archiviazione SecLock</string>
     <string name="password_input_biometric_fallback">Utilizzare la password</string>
@@ -53,6 +53,8 @@
     <string name="shortcut_config_long">Configurazione</string>
     <string name="shortcut_config_short">Configura</string>
     <string name="shortcut_config_disabled">Configurazione (disattivata)</string>
+    <string name="shortcut_quick_lock_long">Blocco rapido</string>
+    <string name="shortcut_quick_lock_short">Blocco rapido</string>
 
     <string name="configuration_label">Configurazione</string>
     <string name="configuration_shortcut">Mostra il collegamento nell\'elenco delle app</string>
@@ -62,5 +64,8 @@
     <string name="configuration_storage_lock">Blocca l\'accesso allo spazio di archiviazione</string>
     <string name="configuration_storage_unlock">Sblocca l\'accesso allo spazio di archiviazione</string>
     <string name="configuration_storage_unlock_biometric">Consentire lo sblocco della memoria con accesso biometrico</string>
-    <string name="configuration_storage_lock_auto">Blocca automaticamente l\'accesso dopo 15 minuti</string>
+    <string name="configuration_storage_lock_auto">Blocca automaticamente l\'accesso</string>
+    <string name="configuration_storage_lock_auto_delay">Ritardo di blocco: %d minuti</string>
+    <string name="configuration_lock_immediately">Immediatamente</string>
+    <string name="configuration_credits">Creato originariamente da &lt;b>2bllw8&lt;/b>.<br/>Forked e modificato da &lt;b>Abdullah Bari&lt;/b>.<br/>Versione %1$s</string>
 </resources>

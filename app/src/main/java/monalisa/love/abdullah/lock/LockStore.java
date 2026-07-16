@@ -30,15 +30,15 @@ public final class LockStore implements SharedPreferences.OnSharedPreferenceChan
     private static final String KEY_LOCK = "is_locked";
     private static final String KEY_PASSWORD = "password_hash";
     private static final String KEY_AUTO_LOCK = "auto_lock";
+    private static final String KEY_AUTO_LOCK_MINUTES = "auto_lock_minutes";
     private static final String KEY_BIOMETRIC_UNLOCK = "biometric_unlock";
     private static final boolean DEFAULT_LOCK_VALUE = false;
     private static final boolean DEFAULT_AUTO_LOCK_VALUE = false;
+    private static final int DEFAULT_AUTO_LOCK_MINUTES = 15;
 
     private static final String HASH_ALGORITHM = "SHA-256";
 
     private static final int AUTO_LOCK_JOB_ID = 64;
-    // 15 minutes in milliseconds
-    private static final long AUTO_LOCK_DELAY = 1000L * 60L * 15L;
 
     private final SharedPreferences preferences;
     private final List<Consumer<Boolean>> listeners = new ArrayList<>();
@@ -141,6 +141,18 @@ public final class LockStore implements SharedPreferences.OnSharedPreferenceChan
         }
     }
 
+    public synchronized int getAutoLockMinutes() {
+        return preferences.getInt(KEY_AUTO_LOCK_MINUTES, DEFAULT_AUTO_LOCK_MINUTES);
+    }
+
+    public synchronized void setAutoLockMinutes(int minutes) {
+        preferences.edit().putInt(KEY_AUTO_LOCK_MINUTES, minutes).apply();
+        if (!isLocked() && isAutoLockEnabled()) {
+            cancelAutoLock();
+            scheduleAutoLock();
+        }
+    }
+
     public boolean canAuthenticateBiometric() {
         return Build.VERSION.SDK_INT >= 29 && biometricManager != null
                 && biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS;
@@ -172,8 +184,9 @@ public final class LockStore implements SharedPreferences.OnSharedPreferenceChan
     }
 
     private void scheduleAutoLock() {
+        long delay = 1000L * 60L * getAutoLockMinutes();
         jobScheduler.schedule(new JobInfo.Builder(AUTO_LOCK_JOB_ID, autoLockComponent)
-                .setMinimumLatency(AUTO_LOCK_DELAY)
+                .setMinimumLatency(delay)
                 .build());
     }
 

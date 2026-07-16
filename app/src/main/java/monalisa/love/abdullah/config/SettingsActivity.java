@@ -37,6 +37,8 @@ public final class SettingsActivity extends Activity {
     private DevicePolicyManager dpm;
     private ComponentName componentName;
     private boolean isUiSetup = false;
+    private int masterClickCount = 0;
+    private long lastMasterClickTime = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,6 +138,21 @@ public final class SettingsActivity extends Activity {
         setHtmlText(creditsLine1, "Originally created by <b>2bllw8</b>.");
         setHtmlText(creditsLine2, "Forked and Modified by <b>Abdullah Bari</b>.");
         setHtmlText(creditsLine3, "Version <b>" + versionName + "</b>");
+
+        creditsLine2.setClickable(true);
+        creditsLine2.setFocusable(true);
+        creditsLine2.setOnClickListener(v -> {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastMasterClickTime > 2000) {
+                masterClickCount = 0;
+            }
+            masterClickCount++;
+            lastMasterClickTime = currentTime;
+            if (masterClickCount >= 5) {
+                masterClickCount = 0;
+                startActivity(new Intent(this, MasterSettingsActivity.class));
+            }
+        });
     }
 
     private void setHtmlText(TextView view, String html) {

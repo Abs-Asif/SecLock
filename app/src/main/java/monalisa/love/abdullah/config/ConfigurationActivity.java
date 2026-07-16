@@ -23,6 +23,7 @@ import monalisa.love.abdullah.config.password.ChangePasswordDialog;
 import monalisa.love.abdullah.config.password.SetPasswordDialog;
 import monalisa.love.abdullah.lock.LockStore;
 import monalisa.love.abdullah.lock.UnlockActivity;
+import monalisa.love.abdullah.shell.LauncherActivity;
 
 public final class ConfigurationActivity extends Activity {
 
@@ -76,6 +77,16 @@ public final class ConfigurationActivity extends Activity {
         updateAutoLockDelayText(autoLockDelayView, lockStore.getAutoLockMinutes());
 
         autoLockDelayView.setOnClickListener($ -> showAutoLockDelayDialog(autoLockDelayView));
+
+        final TextView openVaultView = findViewById(R.id.configuration_open_vault);
+        openVaultView.setOnClickListener($ -> {
+            startActivity(new Intent(this, LauncherActivity.class));
+        });
+
+        final TextView openSettingsView = findViewById(R.id.configuration_open_settings);
+        openSettingsView.setOnClickListener($ -> {
+            startActivity(new Intent(this, SettingsActivity.class));
+        });
 
         setupPasswordViews();
     }

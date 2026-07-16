@@ -15,8 +15,11 @@ public final class HomeEnvironment {
 
     public static final String ROOT = "anemo";
     public static final String ROOT_DOC_ID = "root";
+    public static final String VAULT_ROOT = "vault";
+    public static final String VAULT_ROOT_DOC_ID = "vault_root";
 
     private final Path baseDir;
+    private final Path fallbackDir;
 
     private static volatile HomeEnvironment instance;
 
@@ -38,6 +41,13 @@ public final class HomeEnvironment {
         } else if (!Files.isDirectory(baseDir)) {
             throw new IOException(baseDir + " is not a directory");
         }
+
+        fallbackDir = context.getFilesDir().toPath().resolve(VAULT_ROOT);
+        if (!Files.exists(fallbackDir)) {
+            Files.createDirectory(fallbackDir);
+        } else if (!Files.isDirectory(fallbackDir)) {
+            throw new IOException(fallbackDir + " is not a directory");
+        }
     }
 
     public Path getBaseDir() {
@@ -46,5 +56,13 @@ public final class HomeEnvironment {
 
     public boolean isRoot(Path path) {
         return baseDir.equals(path);
+    }
+
+    public Path getFallbackDir() {
+        return fallbackDir;
+    }
+
+    public boolean isFallbackRoot(Path path) {
+        return fallbackDir.equals(path);
     }
 }

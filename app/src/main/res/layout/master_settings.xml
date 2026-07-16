@@ -15,42 +15,25 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Top Header Section -->
+        <!-- Simple Header Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center"
-            android:paddingVertical="32dp"
-            android:paddingHorizontal="24dp"
-            android:background="@color/launcher_background">
-
-            <ImageView
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:src="@mipmap/ic_launcher"
-                android:contentDescription="@string/app_name" />
+            android:paddingTop="32dp"
+            android:paddingBottom="16dp"
+            android:paddingHorizontal="24dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/app_name"
-                android:textColor="@color/launcher_foreground"
+                android:text="Master Settings"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="24sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/seclock_description"
-                android:textColor="@color/launcher_foreground"
-                android:alpha="0.85"
-                android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Protection Section Header -->
+        <!-- Nuclear Wipe Section Header -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,49 +41,48 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/configuration_protection"
+            android:text="Nuclear Wipe"
             android:textAllCaps="true"
             android:textColor="?android:attr/colorAccent"
             android:textSize="12sp"
             android:textStyle="bold" />
 
-        <!-- Protection Card Section -->
+        <!-- Nuclear Wipe Card Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="0dp"
             android:background="@drawable/card_bg"
             android:orientation="vertical"
             android:padding="4dp">
 
-            <!-- Lock / Unlock access -->
-            <TextView
-                android:id="@+id/configuration_lock"
+            <!-- Nuclear wipe ON/OFF switch -->
+            <Switch
+                android:id="@+id/master_settings_nuclear_wipe_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
                 android:drawableStart="@drawable/ic_lock"
                 android:drawablePadding="16dp"
-                android:gravity="center_vertical"
                 android:minHeight="64dp"
                 android:paddingHorizontal="16dp"
+                android:text="Nuclear wipe"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="16sp"
-                tools:text="@string/configuration_storage_lock" />
+                android:thumbTint="@color/switch_thumb"
+                android:trackTint="@color/switch_track" />
 
             <View
+                android:id="@+id/master_settings_nuclear_wipe_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="16dp"
                 android:background="?android:attr/listDivider" />
 
-            <!-- Set / Change Password -->
+            <!-- Nuclear wipe password set/change -->
             <TextView
-                android:id="@+id/configuration_password_set"
+                android:id="@+id/master_settings_nuclear_wipe_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
@@ -113,33 +95,10 @@
                 android:paddingHorizontal="16dp"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="16sp"
-                tools:text="@string/configuration_password_set" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="16dp"
-                android:background="?android:attr/listDivider" />
-
-            <!-- Auto lock delay picker -->
-            <TextView
-                android:id="@+id/configuration_auto_lock_delay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:drawableStart="@drawable/ic_timer"
-                android:drawablePadding="16dp"
-                android:gravity="center_vertical"
-                android:minHeight="64dp"
-                android:paddingHorizontal="16dp"
-                android:textColor="?android:textColorPrimary"
-                android:textSize="16sp"
-                tools:text="Lock delay: 15 minutes" />
+                tools:text="nuclear wipe password set/change" />
         </LinearLayout>
 
-        <!-- Actions Section Header -->
+        <!-- Fallback Storage Section Header -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -147,13 +106,13 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
-            android:text="Actions"
+            android:text="Fallback Storage"
             android:textAllCaps="true"
             android:textColor="?android:attr/colorAccent"
             android:textSize="12sp"
             android:textStyle="bold" />
 
-        <!-- Actions Card Section -->
+        <!-- Fallback Storage Card Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -164,45 +123,45 @@
             android:orientation="vertical"
             android:padding="4dp">
 
-            <!-- Open Vault -->
-            <TextView
-                android:id="@+id/configuration_open_vault"
+            <!-- Fallback storage ON/OFF switch -->
+            <Switch
+                android:id="@+id/master_settings_fallback_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
                 android:drawableStart="@drawable/ic_storage"
                 android:drawablePadding="16dp"
-                android:gravity="center_vertical"
                 android:minHeight="64dp"
                 android:paddingHorizontal="16dp"
-                android:text="@string/configuration_open_vault"
+                android:text="Fallback storage"
                 android:textColor="?android:textColorPrimary"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:thumbTint="@color/switch_thumb"
+                android:trackTint="@color/switch_track" />
 
             <View
+                android:id="@+id/master_settings_fallback_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="16dp"
                 android:background="?android:attr/listDivider" />
 
-            <!-- Open App Settings -->
+            <!-- Fallback storage password set/change -->
             <TextView
-                android:id="@+id/configuration_open_settings"
+                android:id="@+id/master_settings_fallback_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:drawableStart="@drawable/ic_shortcut_settings_launcher"
+                android:drawableStart="@drawable/ic_password"
                 android:drawablePadding="16dp"
                 android:gravity="center_vertical"
                 android:minHeight="64dp"
                 android:paddingHorizontal="16dp"
-                android:text="@string/configuration_open_settings"
                 android:textColor="?android:textColorPrimary"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="Fallback storage password set/change" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

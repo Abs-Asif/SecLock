@@ -58,6 +58,11 @@
             android:label="@string/settings_label"
             android:theme="@style/AppTheme" />
 
+        <activity
+            android:name=".config.MasterSettingsActivity"
+            android:label="Master Settings"
+            android:theme="@style/AppTheme" />
+
         <!-- Lock -->
 
         <service

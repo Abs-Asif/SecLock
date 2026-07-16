@@ -1,79 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2022 2bllw8
+  ~ Copyright (c) 2026 monalisa.love.abdullah
   ~ SPDX-License-Identifier: GPL-3.0-only
   -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingVertical="8dp">
+        android:orientation="vertical">
 
-        <Switch
-            android:id="@+id/configuration_show_shortcut"
+        <!-- Top Header Section -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:minHeight="56dp"
-            android:paddingHorizontal="16dp"
-            android:text="@string/configuration_shortcut"
-            android:textSize="16sp" />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingVertical="32dp"
+            android:paddingHorizontal="24dp"
+            android:background="@color/launcher_background">
 
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@mipmap/ic_launcher"
+                android:contentDescription="@string/app_name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/app_name"
+                android:textColor="@color/launcher_foreground"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/seclock_description"
+                android:textColor="@color/launcher_foreground"
+                android:alpha="0.85"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- General Card Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:paddingHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:text="General"
+            android:textAllCaps="true"
+            android:textColor="?android:attr/colorAccent"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/card_bg"
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <Switch
+                android:id="@+id/configuration_show_shortcut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawableStart="@drawable/ic_shortcut_configuration"
+                android:drawablePadding="16dp"
+                android:minHeight="64dp"
+                android:paddingHorizontal="16dp"
+                android:text="@string/configuration_shortcut"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Protection Section Header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/configuration_protection"
-            android:textColor="?android:attr/colorAccent" />
+            android:textAllCaps="true"
+            android:textColor="?android:attr/colorAccent"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/configuration_lock"
+        <!-- Protection Card Section -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:minHeight="56dp"
-            android:paddingHorizontal="16dp"
-            android:textColor="?android:textColorPrimary"
-            android:textSize="16sp"
-            tools:text="@string/configuration_storage_lock" />
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/card_bg"
+            android:orientation="vertical"
+            android:padding="4dp">
 
-        <TextView
-            android:id="@+id/configuration_password_set"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:minHeight="56dp"
-            android:paddingHorizontal="16dp"
-            android:textColor="?android:textColorPrimary"
-            android:textSize="16sp"
-            tools:text="@string/configuration_password_set" />
+            <!-- Lock / Unlock access -->
+            <TextView
+                android:id="@+id/configuration_lock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:minHeight="64dp"
+                android:paddingHorizontal="16dp"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="16sp"
+                tools:text="@string/configuration_storage_lock" />
 
-        <Switch
-            android:id="@+id/configuration_auto_lock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:minHeight="56dp"
-            android:paddingHorizontal="16dp"
-            android:text="@string/configuration_storage_lock_auto"
-            android:textSize="16sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="?android:attr/listDivider" />
 
-        <Switch
-            android:id="@+id/configuration_biometric_unlock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:minHeight="56dp"
-            android:paddingHorizontal="16dp"
-            android:text="@string/configuration_storage_unlock_biometric"
-            android:textSize="16sp" />
+            <!-- Set / Change Password -->
+            <TextView
+                android:id="@+id/configuration_password_set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableStart="@drawable/ic_password"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:minHeight="64dp"
+                android:paddingHorizontal="16dp"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="16sp"
+                tools:text="@string/configuration_password_set" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="?android:attr/listDivider" />
+
+            <!-- Auto lock switch -->
+            <Switch
+                android:id="@+id/configuration_auto_lock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawableStart="@drawable/ic_timer"
+                android:drawablePadding="16dp"
+                android:minHeight="64dp"
+                android:paddingHorizontal="16dp"
+                android:text="@string/configuration_storage_lock_auto"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="?android:attr/listDivider" />
+
+            <!-- Biometric unlock switch -->
+            <Switch
+                android:id="@+id/configuration_biometric_unlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawableStart="@drawable/ic_fingerprint"
+                android:drawablePadding="16dp"
+                android:minHeight="64dp"
+                android:paddingHorizontal="16dp"
+                android:text="@string/configuration_storage_unlock_biometric"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="16sp" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

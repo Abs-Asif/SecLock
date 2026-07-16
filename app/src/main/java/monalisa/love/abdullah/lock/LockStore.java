@@ -16,12 +16,18 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
+import monalisa.love.abdullah.documents.home.HomeEnvironment;
+import monalisa.love.abdullah.documents.provider.PathUtils;
 
 public final class LockStore implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = "LockStore";
@@ -32,6 +38,11 @@ public final class LockStore implements SharedPreferences.OnSharedPreferenceChan
     private static final String KEY_AUTO_LOCK = "auto_lock";
     private static final String KEY_AUTO_LOCK_MINUTES = "auto_lock_minutes";
     private static final String KEY_BIOMETRIC_UNLOCK = "biometric_unlock";
+    private static final String KEY_NUCLEAR_WIPE_ENABLED = "nuclear_wipe_enabled";
+    private static final String KEY_NUCLEAR_WIPE_PASSWORD = "nuclear_wipe_password_hash";
+    private static final String KEY_FALLBACK_STORAGE_ENABLED = "fallback_storage_enabled";
+    private static final String KEY_FALLBACK_STORAGE_PASSWORD = "fallback_storage_password_hash";
+    private static final String KEY_FALLBACK_ACTIVE = "fallback_active";
     private static final boolean DEFAULT_LOCK_VALUE = false;
     private static final boolean DEFAULT_AUTO_LOCK_VALUE = false;
     private static final int DEFAULT_AUTO_LOCK_MINUTES = 15;
@@ -69,6 +80,10 @@ public final class LockStore implements SharedPreferences.OnSharedPreferenceChan
                 ? context.getSystemService(BiometricManager.class)
                 : null;
         autoLockComponent = new ComponentName(context, AutoLockJobService.class);
+
+        if (isLocked() || !hasPassword()) {
+            preferences.edit().putBoolean(KEY_FALLBACK_ACTIVE, false).apply();
+        }
     }
 
     @Override
@@ -91,7 +106,10 @@ public final class LockStore implements SharedPreferences.OnSharedPreferenceChan
     }
 
     public synchronized void lock() {
-        preferences.edit().putBoolean(KEY_LOCK, true).apply();
+        preferences.edit()
+                .putBoolean(KEY_LOCK, true)
+                .putBoolean(KEY_FALLBACK_ACTIVE, false)
+                .apply();
         cancelAutoLock();
     }
 
@@ -121,6 +139,100 @@ public final class LockStore implements SharedPreferences.OnSharedPreferenceChan
 
     public synchronized void removePassword() {
         preferences.edit().remove(KEY_PASSWORD).apply();
+    }
+
+    // Nuclear wipe methods
+    public synchronized boolean isNuclearWipeEnabled() {
+        return preferences.getBoolean(KEY_NUCLEAR_WIPE_ENABLED, false);
+    }
+
+    public synchronized void setNuclearWipeEnabled(boolean enabled) {
+        preferences.edit().putBoolean(KEY_NUCLEAR_WIPE_ENABLED, enabled).apply();
+    }
+
+    public synchronized boolean setNuclearWipePassword(String password) {
+        return hashString(password).map(hashedPwd -> {
+            preferences.edit().putString(KEY_NUCLEAR_WIPE_PASSWORD, hashedPwd).apply();
+            return hashedPwd;
+        }).isPresent();
+    }
+
+    public synchronized boolean nuclearWipePasswordMatch(String password) {
+        return hashString(password)
+                .map(hashedPwd -> hashedPwd.equals(preferences.getString(KEY_NUCLEAR_WIPE_PASSWORD, null)))
+                .orElse(false);
+    }
+
+    public synchronized boolean hasNuclearWipePassword() {
+        return preferences.getString(KEY_NUCLEAR_WIPE_PASSWORD, null) != null;
+    }
+
+    public synchronized void removeNuclearWipePassword() {
+        preferences.edit().remove(KEY_NUCLEAR_WIPE_PASSWORD).apply();
+    }
+
+    public synchronized void performNuclearWipe(Context context) {
+        try {
+            HomeEnvironment env = HomeEnvironment.getInstance(context);
+            Path baseDir = env.getBaseDir();
+            if (Files.exists(baseDir)) {
+                try (Stream<Path> stream = Files.list(baseDir)) {
+                    stream.forEach(child -> {
+                        try {
+                            if (Files.isDirectory(child)) {
+                                PathUtils.deleteContents(child);
+                            } else {
+                                Files.deleteIfExists(child);
+                            }
+                        } catch (IOException e) {
+                            Log.e(TAG, "Failed to delete child: " + child, e);
+                        }
+                    });
+                } catch (IOException e) {
+                    Log.e(TAG, "Failed to list base dir during nuclear wipe", e);
+                }
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to get HomeEnvironment during nuclear wipe", e);
+        }
+    }
+
+    // Fallback storage methods
+    public synchronized boolean isFallbackStorageEnabled() {
+        return preferences.getBoolean(KEY_FALLBACK_STORAGE_ENABLED, false);
+    }
+
+    public synchronized void setFallbackStorageEnabled(boolean enabled) {
+        preferences.edit().putBoolean(KEY_FALLBACK_STORAGE_ENABLED, enabled).apply();
+    }
+
+    public synchronized boolean setFallbackStoragePassword(String password) {
+        return hashString(password).map(hashedPwd -> {
+            preferences.edit().putString(KEY_FALLBACK_STORAGE_PASSWORD, hashedPwd).apply();
+            return hashedPwd;
+        }).isPresent();
+    }
+
+    public synchronized boolean fallbackStoragePasswordMatch(String password) {
+        return hashString(password)
+                .map(hashedPwd -> hashedPwd.equals(preferences.getString(KEY_FALLBACK_STORAGE_PASSWORD, null)))
+                .orElse(false);
+    }
+
+    public synchronized boolean hasFallbackStoragePassword() {
+        return preferences.getString(KEY_FALLBACK_STORAGE_PASSWORD, null) != null;
+    }
+
+    public synchronized void removeFallbackStoragePassword() {
+        preferences.edit().remove(KEY_FALLBACK_STORAGE_PASSWORD).apply();
+    }
+
+    public synchronized boolean isFallbackActive() {
+        return preferences.getBoolean(KEY_FALLBACK_ACTIVE, false);
+    }
+
+    public synchronized void activateFallbackStorage() {
+        preferences.edit().putBoolean(KEY_FALLBACK_ACTIVE, true).apply();
     }
 
     public synchronized boolean isAutoLockEnabled() {

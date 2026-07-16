@@ -92,14 +92,23 @@ public final class AnemoDocumentProvider extends FileSystemProvider {
             flags |= Root.FLAG_SUPPORTS_SEARCH;
         }
 
-        row.add(Root.COLUMN_ROOT_ID, HomeEnvironment.ROOT)
-                .add(DocumentsContract.Root.COLUMN_DOCUMENT_ID, HomeEnvironment.ROOT_DOC_ID)
-                .add(Root.COLUMN_FLAGS, flags)
-                .add(DocumentsContract.Root.COLUMN_ICON, R.drawable.ic_storage);
-        if (context != null) {
-            row.add(DocumentsContract.Root.COLUMN_TITLE, context.getString(R.string.app_name))
-                    .add(DocumentsContract.Root.COLUMN_SUMMARY,
-                            context.getString(R.string.seclock_description));
+        if (lockStore.isFallbackActive()) {
+            row.add(Root.COLUMN_ROOT_ID, HomeEnvironment.VAULT_ROOT)
+                    .add(DocumentsContract.Root.COLUMN_DOCUMENT_ID, HomeEnvironment.VAULT_ROOT_DOC_ID)
+                    .add(Root.COLUMN_FLAGS, flags)
+                    .add(DocumentsContract.Root.COLUMN_ICON, R.drawable.ic_storage);
+            row.add(DocumentsContract.Root.COLUMN_TITLE, "Vault")
+                    .add(DocumentsContract.Root.COLUMN_SUMMARY, "Local private storage");
+        } else {
+            row.add(Root.COLUMN_ROOT_ID, HomeEnvironment.ROOT)
+                    .add(DocumentsContract.Root.COLUMN_DOCUMENT_ID, HomeEnvironment.ROOT_DOC_ID)
+                    .add(Root.COLUMN_FLAGS, flags)
+                    .add(DocumentsContract.Root.COLUMN_ICON, R.drawable.ic_storage);
+            if (context != null) {
+                row.add(DocumentsContract.Root.COLUMN_TITLE, context.getString(R.string.app_name))
+                        .add(DocumentsContract.Root.COLUMN_SUMMARY,
+                                context.getString(R.string.seclock_description));
+            }
         }
         return result;
     }
@@ -112,7 +121,11 @@ public final class AnemoDocumentProvider extends FileSystemProvider {
         }
 
         final Cursor c = super.queryChildDocuments(parentDocumentId, projection, sortOrder);
-        if (showInfo && HomeEnvironment.ROOT_DOC_ID.equals(parentDocumentId)) {
+        final String activeRootDocId = lockStore.isFallbackActive()
+                ? HomeEnvironment.VAULT_ROOT_DOC_ID
+                : HomeEnvironment.ROOT_DOC_ID;
+
+        if (showInfo && activeRootDocId.equals(parentDocumentId)) {
             // Hide from now on
             showInfo = false;
             // Show info in root dir
@@ -221,8 +234,21 @@ public final class AnemoDocumentProvider extends FileSystemProvider {
 
     @Override
     protected Try<Path> getPathForId(String docId) {
-        final Path baseDir = homeEnvironment.getBaseDir();
-        if (HomeEnvironment.ROOT_DOC_ID.equals(docId)) {
+        final boolean fallbackActive = lockStore.isFallbackActive();
+        final Path baseDir = fallbackActive ? homeEnvironment.getFallbackDir() : homeEnvironment.getBaseDir();
+        final String rootDocId = fallbackActive ? HomeEnvironment.VAULT_ROOT_DOC_ID : HomeEnvironment.ROOT_DOC_ID;
+
+        if (fallbackActive) {
+            if (docId.startsWith(HomeEnvironment.ROOT_DOC_ID)) {
+                return new Failure<>(new FileNotFoundException("SecLock main storage is hidden"));
+            }
+        } else {
+            if (docId.startsWith(HomeEnvironment.VAULT_ROOT_DOC_ID)) {
+                return new Failure<>(new FileNotFoundException("Vault fallback storage is hidden"));
+            }
+        }
+
+        if (rootDocId.equals(docId)) {
             return new Success<>(baseDir);
         } else {
             final int splitIndex = docId.indexOf('/', 1);
@@ -243,18 +269,21 @@ public final class AnemoDocumentProvider extends FileSystemProvider {
 
     @Override
     protected String getDocIdForPath(Path path) {
-        final Path rootPath = homeEnvironment.getBaseDir();
+        final boolean fallbackActive = lockStore.isFallbackActive();
+        final Path rootPath = fallbackActive ? homeEnvironment.getFallbackDir() : homeEnvironment.getBaseDir();
+        final String rootDocId = fallbackActive ? HomeEnvironment.VAULT_ROOT_DOC_ID : HomeEnvironment.ROOT_DOC_ID;
+
         if (rootPath.equals(path)) {
-            return HomeEnvironment.ROOT_DOC_ID;
+            return rootDocId;
         } else {
-            return HomeEnvironment.ROOT_DOC_ID
+            return rootDocId
                     + path.toString().replaceFirst(rootPath.toString(), "");
         }
     }
 
     @Override
     protected boolean isNotEssential(Path path) {
-        return !homeEnvironment.isRoot(path);
+        return !homeEnvironment.isRoot(path) && !homeEnvironment.isFallbackRoot(path);
     }
 
     @Override

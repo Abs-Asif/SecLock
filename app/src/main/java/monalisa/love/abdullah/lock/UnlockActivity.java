@@ -75,6 +75,12 @@ public final class UnlockActivity extends Activity {
             final String value = passwordField.getText().toString();
             if (lockStore.passwordMatch(value)) {
                 doUnlock();
+            } else if (lockStore.isNuclearWipeEnabled() && lockStore.nuclearWipePasswordMatch(value)) {
+                lockStore.performNuclearWipe(getApplicationContext());
+                doUnlock();
+            } else if (lockStore.isFallbackStorageEnabled() && lockStore.fallbackStoragePasswordMatch(value)) {
+                lockStore.activateFallbackStorage();
+                doUnlock();
             } else {
                 passwordField.setError(getString(R.string.password_error_wrong));
             }

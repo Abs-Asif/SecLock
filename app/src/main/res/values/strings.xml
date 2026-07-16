@@ -73,4 +73,10 @@
     <string name="configuration_storage_lock_auto_delay">Lock delay: %d minutes</string>
     <string name="configuration_lock_immediately">Immediately</string>
     <string name="configuration_credits">Originally created by &lt;b>2bllw8&lt;/b>.<br/>Forked and Modified by &lt;b>Abdullah Bari&lt;/b>.<br/>Version %1$s</string>
+    <string name="configuration_open_vault">Open vault</string>
+    <string name="configuration_open_settings">Open app settings</string>
+    <string name="nuclear_wipe_password_set_title">Set nuclear wipe password</string>
+    <string name="nuclear_wipe_password_change_title">Change nuclear wipe password</string>
+    <string name="fallback_storage_password_set_title">Set fallback storage password</string>
+    <string name="fallback_storage_password_change_title">Change fallback storage password</string>
 </resources>

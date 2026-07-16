@@ -3,8 +3,7 @@
   ~ SPDX-License-Identifier: GPL-3.0-only
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="monalisa.love.abdullah">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 

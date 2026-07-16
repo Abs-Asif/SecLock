@@ -8,4 +8,9 @@
     <color name="anemo_accent">#80CBC4</color>
     <color name="launcher_background">#004D40</color>
     <color name="launcher_foreground">#E0F2F1</color>
+
+    <color name="switch_thumb_active">#80CBC4</color>
+    <color name="switch_thumb_inactive">#757575</color>
+    <color name="switch_track_active">#004D40</color>
+    <color name="switch_track_inactive">#37474F</color>
 </resources>

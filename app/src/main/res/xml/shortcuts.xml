@@ -1,11 +1,11 @@
 <!--
-  ~ Copyright (c) 2022 2bllw8
+  ~ Copyright (c) 2026 monalisa.love.abdullah
   ~ SPDX-License-Identifier: GPL-3.0-only
   -->
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_configuration"
+        android:icon="@drawable/ic_shortcut_config_launcher"
         android:shortcutDisabledMessage="@string/shortcut_config_disabled"
         android:shortcutId="configuration"
         android:shortcutLongLabel="@string/shortcut_config_long"
@@ -18,7 +18,7 @@
     </shortcut>
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_lock"
+        android:icon="@drawable/ic_shortcut_lock_launcher"
         android:shortcutId="quick_lock"
         android:shortcutLongLabel="@string/shortcut_quick_lock_long"
         android:shortcutShortLabel="@string/shortcut_quick_lock_short">
@@ -26,6 +26,18 @@
         <intent
             android:action="monalisa.love.abdullah.action.QUICK_LOCK"
             android:targetClass="monalisa.love.abdullah.shell.LauncherActivity"
+            android:targetPackage="monalisa.love.abdullah" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_settings_launcher"
+        android:shortcutId="settings"
+        android:shortcutLongLabel="@string/shortcut_settings_long"
+        android:shortcutShortLabel="@string/shortcut_settings_short">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="monalisa.love.abdullah.config.SettingsActivity"
             android:targetPackage="monalisa.love.abdullah" />
     </shortcut>
 </shortcuts>

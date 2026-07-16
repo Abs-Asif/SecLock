@@ -7,6 +7,7 @@
         <item name="android:colorPrimary">@color/anemo_primary</item>
         <item name="android:colorPrimaryDark">@color/anemo_primary_dark</item>
         <item name="android:colorAccent">@color/anemo_accent</item>
+        <item name="android:colorControlActivated">@color/switch_thumb_active</item>
         <item name="android:navigationBarColor">?android:colorPrimary</item>
         <item name="android:statusBarColor">?android:colorPrimary</item>
     </style>

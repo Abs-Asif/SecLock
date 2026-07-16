@@ -32,8 +32,11 @@ ext {
     minSdkVersion = 26
     targetSdkVersion = 36
 
-    versionCode = Integer.parseInt(new java.text.SimpleDateFormat("yyyyMMdd").format(new Date()))
-    versionName = new java.text.SimpleDateFormat("yyyy.MM.dd").format(new Date())
+    def buildDate = new Date()
+    versionCode = Integer.parseInt(new java.text.SimpleDateFormat("yyyyMMdd").format(buildDate))
+    versionName = new java.text.SimpleDateFormat("yyyy.MM.dd").format(buildDate) + "." +
+                  new java.text.SimpleDateFormat("H").format(buildDate) +
+                  new java.text.SimpleDateFormat("mm").format(buildDate)
 
     namespace = "monalisa.love.abdullah"
 

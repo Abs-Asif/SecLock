@@ -40,6 +40,14 @@ jobs:
           echo 'androidKeyPassword=${{ secrets.KEY_PASSWORD }}' >> local.properties
           echo 'androidStoreFile=sign_key.jks' >> local.properties
           echo "$KEY_STORE" | base64 --decode > sign_key.jks
+          # Validate the keystore file
+          if [ ! -f sign_key.jks ] || [ ! -s sign_key.jks ]; then
+            echo "ERROR: Keystore file is missing or empty"
+            exit 1
+          fi
+          file sign_key.jks
+          # Verify keystore is readable by Java
+          keytool -list -v -keystore sign_key.jks -storepass "${{ secrets.KEY_STORE_PASSWORD }}"
       - name: Build
         id: build
         run: |

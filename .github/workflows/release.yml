@@ -23,11 +23,20 @@ jobs:
         env:
           KEY_STORE: ${{ secrets.KEY_STORE }}
         run: |
-          echo 'androidStorePassword=${{ secrets.KEY_STORE_PASSWORD }}' >> local.properties
-          echo 'androidKeyAlias=${{ secrets.ALIAS }}' >> local.properties
-          echo 'androidKeyPassword=${{ secrets.KEY_PASSWORD }}' >> local.properties
-          echo 'androidStoreFile=sign_key.jks' >> local.properties
-          echo "$KEY_STORE" | base64 --decode > sign_key.jks
+          if [ -n "$KEY_STORE" ]; then
+            echo "Using production signing key from secrets."
+            echo 'androidStorePassword=${{ secrets.KEY_STORE_PASSWORD }}' >> local.properties
+            echo 'androidKeyAlias=${{ secrets.ALIAS }}' >> local.properties
+            echo 'androidKeyPassword=${{ secrets.KEY_PASSWORD }}' >> local.properties
+            echo 'androidStoreFile=sign_key.jks' >> local.properties
+            echo "$KEY_STORE" | base64 --decode > sign_key.jks
+          else
+            echo "KEY_STORE secret is empty/missing. Falling back to the dummy signing key."
+            echo 'androidStorePassword=dummypassword' >> local.properties
+            echo 'androidKeyAlias=dummyalias' >> local.properties
+            echo 'androidKeyPassword=dummypassword' >> local.properties
+            echo 'androidStoreFile=sign_key.jks' >> local.properties
+          fi
           # Validate the keystore file
           if [ ! -f sign_key.jks ] || [ ! -s sign_key.jks ]; then
             echo "ERROR: Keystore file is missing or empty"
@@ -35,7 +44,11 @@ jobs:
           fi
           file sign_key.jks
           # Verify keystore is readable by Java
-          keytool -list -v -keystore sign_key.jks -storepass "${{ secrets.KEY_STORE_PASSWORD }}"
+          if [ -n "$KEY_STORE" ]; then
+            keytool -list -v -keystore sign_key.jks -storepass "${{ secrets.KEY_STORE_PASSWORD }}"
+          else
+            keytool -list -v -keystore sign_key.jks -storepass "dummypassword"
+          fi
       - name: Build
         id: build
         run: |

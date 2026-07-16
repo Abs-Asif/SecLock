@@ -16,6 +16,7 @@
 
 # Sign key
 *.jks
+!sign_key.jks
 
 # VSCode
 */.classpath

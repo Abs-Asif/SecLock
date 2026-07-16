@@ -1,0 +1,132 @@
+/*
+ * Copyright (c) 2022 2bllw8
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+package monalisa.love.abdullah.config;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Insets;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowInsets;
+import android.widget.Switch;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+
+import java.util.function.Consumer;
+
+import monalisa.love.abdullah.R;
+import monalisa.love.abdullah.config.password.ChangePasswordDialog;
+import monalisa.love.abdullah.config.password.SetPasswordDialog;
+import monalisa.love.abdullah.lock.LockStore;
+import monalisa.love.abdullah.lock.UnlockActivity;
+import monalisa.love.abdullah.shell.AnemoShell;
+
+public final class ConfigurationActivity extends Activity {
+
+    private ViewGroup rootView;
+    private TextView passwordSetView;
+    private TextView changeLockView;
+    private Switch biometricSwitch;
+
+    private LockStore lockStore;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        lockStore = LockStore.getInstance(getApplicationContext());
+        lockStore.addListener(onLockChanged);
+
+        setContentView(R.layout.configuration);
+
+        rootView = findViewById(R.id.root_view);
+        enableEdgeToEdge();
+
+        passwordSetView = findViewById(R.id.configuration_password_set);
+
+        final Switch shortcutSwitch = findViewById(R.id.configuration_show_shortcut);
+        shortcutSwitch.setChecked(AnemoShell.isEnabled(getApplication()));
+        shortcutSwitch.setOnCheckedChangeListener(
+                (v, isChecked) -> AnemoShell.setEnabled(getApplication(), isChecked));
+
+        changeLockView = findViewById(R.id.configuration_lock);
+        changeLockView.setText(lockStore.isLocked()
+                ? R.string.configuration_storage_unlock
+                : R.string.configuration_storage_lock);
+        changeLockView.setOnClickListener($ -> {
+            if (lockStore.isLocked()) {
+                startActivity(new Intent(this, UnlockActivity.class));
+            } else {
+                lockStore.lock();
+            }
+        });
+
+        final Switch autoLockSwitch = findViewById(R.id.configuration_auto_lock);
+        autoLockSwitch.setChecked(lockStore.isAutoLockEnabled());
+        autoLockSwitch.setOnCheckedChangeListener(
+                (v, isChecked) -> lockStore.setAutoLockEnabled(isChecked));
+
+        biometricSwitch = findViewById(R.id.configuration_biometric_unlock);
+        biometricSwitch.setVisibility(lockStore.canAuthenticateBiometric()
+                ? View.VISIBLE
+                : View.GONE);
+        biometricSwitch.setChecked(lockStore.isBiometricUnlockEnabled());
+        biometricSwitch.setOnCheckedChangeListener(
+                (v, isChecked) -> lockStore.setBiometricUnlockEnabled(isChecked));
+
+        setupPasswordViews();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        lockStore.removeListener(onLockChanged);
+    }
+
+    private void setupPasswordViews() {
+        if (lockStore.hasPassword()) {
+            passwordSetView.setText(R.string.configuration_password_change);
+            passwordSetView.setOnClickListener(
+                    $ -> new ChangePasswordDialog(this, lockStore, this::setupPasswordViews)
+                            .show());
+        } else {
+            passwordSetView.setText(R.string.configuration_password_set);
+            passwordSetView.setOnClickListener(
+                    $ -> new SetPasswordDialog(this, lockStore, this::setupPasswordViews).show());
+        }
+        final boolean enableViews = !lockStore.isLocked();
+        passwordSetView.setEnabled(enableViews);
+        biometricSwitch.setEnabled(enableViews);
+    }
+
+    private final Consumer<Boolean> onLockChanged = isLocked -> {
+        passwordSetView.setEnabled(!isLocked);
+        biometricSwitch.setEnabled(!isLocked);
+        changeLockView.setText(isLocked
+                ? R.string.configuration_storage_unlock
+                : R.string.configuration_storage_lock);
+    };
+
+    private void enableEdgeToEdge() {
+        if (Build.VERSION.SDK_INT < 35) {
+            return;
+        }
+
+        rootView.setOnApplyWindowInsetsListener((v, windowInsets) -> {
+            final Insets insets = windowInsets.getInsets(WindowInsets.Type.systemBars());
+            final ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams)
+                    v.getLayoutParams();
+            mlp.topMargin = insets.top;
+            mlp.rightMargin = insets.right;
+            mlp.bottomMargin = insets.bottom;
+            mlp.leftMargin = insets.left;
+            v.setLayoutParams(mlp);
+            return WindowInsets.CONSUMED;
+        });
+    }
+}

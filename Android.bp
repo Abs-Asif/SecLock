@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 android_app {
-    name: "anemo",
+    name: "SecLock",
     manifest: "app/src/main/AndroidManifest.xml",
     sdk_version: "36",
     srcs: [
-        "app/src/main/java/exe/bbllw8/anemo/**/*.java",
+        "app/src/main/java/monalisa/love/abdullah/**/*.java",
     ],
     resource_dirs: [
         "app/src/main/res",

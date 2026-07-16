@@ -4,6 +4,8 @@
   -->
 <resources>
     <string name="app_name">SecLock</string>
+    <string name="uninstall_prevention_title" translatable="false">SecLock Protection</string>
+    <string name="uninstall_prevention_description" translatable="false">Allows SecLock to protect itself from being uninstalled.</string>
 
     <string name="seclock_description">Local private storage</string>
     <string name="seclock_info">Files stored in the SecLock storage are private and other apps can\'t access them without the user\'s consent.</string>
@@ -55,8 +57,11 @@
     <string name="shortcut_config_disabled">Configuration (disabled)</string>
     <string name="shortcut_quick_lock_long">Quick lock</string>
     <string name="shortcut_quick_lock_short">Quick lock</string>
+    <string name="shortcut_settings_long" translatable="false">Settings</string>
+    <string name="shortcut_settings_short" translatable="false">Settings</string>
 
     <string name="configuration_label">Configuration</string>
+    <string name="settings_label" translatable="false">Settings</string>
     <string name="configuration_shortcut">Show shortcut in app list</string>
     <string name="configuration_protection">Protection</string>
     <string name="configuration_password_set">Set password</string>

@@ -1,19 +1,17 @@
 /*
- * Copyright (c) 2022 2bllw8
+ * Copyright (c) 2026 monalisa.love.abdullah
  * SPDX-License-Identifier: GPL-3.0-only
  */
 package monalisa.love.abdullah.config;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Insets;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -25,22 +23,20 @@ import monalisa.love.abdullah.config.password.ChangePasswordDialog;
 import monalisa.love.abdullah.config.password.SetPasswordDialog;
 import monalisa.love.abdullah.lock.LockStore;
 import monalisa.love.abdullah.lock.UnlockActivity;
-import monalisa.love.abdullah.shell.AnemoShell;
 
 public final class ConfigurationActivity extends Activity {
 
     private ViewGroup rootView;
     private TextView passwordSetView;
     private TextView changeLockView;
-    private Switch biometricSwitch;
-    private TextView lockImmediatelyView;
-    private View lockImmediatelyDivider;
 
     private LockStore lockStore;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE,
+                android.view.WindowManager.LayoutParams.FLAG_SECURE);
 
         lockStore = LockStore.getInstance(getApplicationContext());
         lockStore.addListener(onLockChanged);
@@ -52,11 +48,6 @@ public final class ConfigurationActivity extends Activity {
 
         passwordSetView = findViewById(R.id.configuration_password_set);
 
-        final Switch shortcutSwitch = findViewById(R.id.configuration_show_shortcut);
-        shortcutSwitch.setChecked(AnemoShell.isEnabled(getApplication()));
-        shortcutSwitch.setOnCheckedChangeListener(
-                (v, isChecked) -> AnemoShell.setEnabled(getApplication(), isChecked));
-
         changeLockView = findViewById(R.id.configuration_lock);
         changeLockView.setText(lockStore.isLocked()
                 ? R.string.configuration_storage_unlock
@@ -65,70 +56,28 @@ public final class ConfigurationActivity extends Activity {
             if (lockStore.isLocked()) {
                 startActivity(new Intent(this, UnlockActivity.class));
             } else {
-                lockStore.lock();
+                if (lockStore.hasPassword()) {
+                    lockStore.lock();
+                } else {
+                    new SetPasswordDialog(this, lockStore, () -> {
+                        setupPasswordViews();
+                        if (lockStore.hasPassword()) {
+                            lockStore.lock();
+                        }
+                    }).show();
+                }
             }
         });
 
-        lockImmediatelyDivider = findViewById(R.id.configuration_lock_immediately_divider);
-        lockImmediatelyView = findViewById(R.id.configuration_lock_immediately);
-        lockImmediatelyView.setOnClickListener($ -> {
-            lockStore.lock();
-            finishAffinity();
-        });
-
-        boolean isLocked = lockStore.isLocked();
-        lockImmediatelyView.setVisibility(isLocked ? View.GONE : View.VISIBLE);
-        lockImmediatelyDivider.setVisibility(isLocked ? View.GONE : View.VISIBLE);
-
-        final Switch autoLockSwitch = findViewById(R.id.configuration_auto_lock);
-        final View autoLockDivider = findViewById(R.id.configuration_auto_lock_divider);
         final TextView autoLockDelayView = findViewById(R.id.configuration_auto_lock_delay);
 
-        autoLockSwitch.setChecked(lockStore.isAutoLockEnabled());
-        autoLockDelayView.setVisibility(lockStore.isAutoLockEnabled() ? View.VISIBLE : View.GONE);
-        autoLockDivider.setVisibility(lockStore.isAutoLockEnabled() ? View.VISIBLE : View.GONE);
+        // Always ensure auto-lock is enabled so delay is functional
+        lockStore.setAutoLockEnabled(true);
         updateAutoLockDelayText(autoLockDelayView, lockStore.getAutoLockMinutes());
-
-        autoLockSwitch.setOnCheckedChangeListener((v, isChecked) -> {
-            lockStore.setAutoLockEnabled(isChecked);
-            autoLockDelayView.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-            autoLockDivider.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-        });
 
         autoLockDelayView.setOnClickListener($ -> showAutoLockDelayDialog(autoLockDelayView));
 
-        biometricSwitch = findViewById(R.id.configuration_biometric_unlock);
-        biometricSwitch.setVisibility(lockStore.canAuthenticateBiometric()
-                ? View.VISIBLE
-                : View.GONE);
-        biometricSwitch.setChecked(lockStore.isBiometricUnlockEnabled());
-        biometricSwitch.setOnCheckedChangeListener(
-                (v, isChecked) -> lockStore.setBiometricUnlockEnabled(isChecked));
-
         setupPasswordViews();
-        setupCredits();
-    }
-
-    private void setupCredits() {
-        final TextView creditsView = findViewById(R.id.configuration_credits);
-        String versionName = "";
-        try {
-            if (Build.VERSION.SDK_INT >= 33) {
-                versionName = getPackageManager().getPackageInfo(getPackageName(),
-                        PackageManager.PackageInfoFlags.of(0)).versionName;
-            } else {
-                versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            }
-        } catch (Exception e) {
-            versionName = "1.0.0";
-        }
-
-        String creditsHtml = getString(R.string.configuration_credits, versionName);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            creditsView.setText(android.text.Html.fromHtml(creditsHtml, android.text.Html.FROM_HTML_MODE_LEGACY));
-        } else {
-            creditsView.setText(android.text.Html.fromHtml(creditsHtml));
-        }
     }
 
     @Override
@@ -150,7 +99,6 @@ public final class ConfigurationActivity extends Activity {
         }
         final boolean enableViews = !lockStore.isLocked();
         passwordSetView.setEnabled(enableViews);
-        biometricSwitch.setEnabled(enableViews);
     }
 
     private void updateAutoLockDelayText(TextView view, int minutes) {
@@ -184,12 +132,9 @@ public final class ConfigurationActivity extends Activity {
 
     private final Consumer<Boolean> onLockChanged = isLocked -> {
         passwordSetView.setEnabled(!isLocked);
-        biometricSwitch.setEnabled(!isLocked);
         changeLockView.setText(isLocked
                 ? R.string.configuration_storage_unlock
                 : R.string.configuration_storage_lock);
-        lockImmediatelyView.setVisibility(isLocked ? View.GONE : View.VISIBLE);
-        lockImmediatelyDivider.setVisibility(isLocked ? View.GONE : View.VISIBLE);
     };
 
     private void enableEdgeToEdge() {

@@ -53,6 +53,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".config.SettingsActivity"
+            android:label="@string/settings_label"
+            android:theme="@style/AppTheme" />
+
         <!-- Lock -->
 
         <service
@@ -130,6 +135,21 @@
                 <data android:mimeType="text/*" />
             </intent-filter>
         </activity>
+
+        <!-- Device Admin for Uninstall Prevention -->
+        <receiver
+            android:name=".lock.SecurityAdminReceiver"
+            android:label="@string/uninstall_prevention_title"
+            android:description="@string/uninstall_prevention_description"
+            android:permission="android.permission.BIND_DEVICE_ADMIN"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_policies" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
     </application>
 
     <queries>

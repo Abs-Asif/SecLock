@@ -18,7 +18,7 @@
     <string name="password_error_mismatch">Las contraseñas no coinciden</string>
     <string name="password_error_wrong">Contraseña incorrecta</string>
 
-    <string name="password_input_message">Escriba su contraseña de SecLock para desbloquear el almacenamiento de SecLock</string>
+    <string name="password_input_message">Escriba su contraseña para acceder a la bóveda.</string>
     <string name="password_input_action">Desbloquear</string>
     <string name="password_input_biometric_message">Autentificarse para desbloquear el almacenamiento de SecLock</string>
     <string name="password_input_biometric_fallback">Usar contraseña</string>
@@ -53,6 +53,8 @@
     <string name="shortcut_config_long">Configuración</string>
     <string name="shortcut_config_short">Configurar</string>
     <string name="shortcut_config_disabled">Configuración (deshabilitada)</string>
+    <string name="shortcut_quick_lock_long">Bloqueo rápido</string>
+    <string name="shortcut_quick_lock_short">Bloqueo rápido</string>
 
     <string name="configuration_label">Configuración</string>
     <string name="configuration_shortcut">Mostrar acceso directo en la lista de aplicaciones</string>
@@ -62,5 +64,8 @@
     <string name="configuration_storage_lock">Bloquear el acceso al almacenamiento</string>
     <string name="configuration_storage_unlock">Desbloquear el acceso al almacenamiento</string>
     <string name="configuration_storage_unlock_biometric">Permitir el desbloqueo del almacenamiento con acceso biométrico</string>
-    <string name="configuration_storage_lock_auto">Bloquear automáticamente el acceso después de 15 minutos</string>
+    <string name="configuration_storage_lock_auto">Bloquear automáticamente el acceso</string>
+    <string name="configuration_storage_lock_auto_delay">Retraso de bloqueo: %d minutos</string>
+    <string name="configuration_lock_immediately">Inmediatamente</string>
+    <string name="configuration_credits">Creado originalmente por &lt;b>2bllw8&lt;/b>.<br/>Bifurcado y modificado por &lt;b>Abdullah Bari&lt;/b>.<br/>Versión %1$s</string>
 </resources>

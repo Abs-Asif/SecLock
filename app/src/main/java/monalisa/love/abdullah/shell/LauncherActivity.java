@@ -51,7 +51,18 @@ public class LauncherActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (LockStore.getInstance(this).isLocked()) {
+        final LockStore lockStore = LockStore.getInstance(this);
+        final String action = getIntent().getAction();
+        if ("monalisa.love.abdullah.action.QUICK_LOCK".equals(action)) {
+            if (lockStore.hasPassword() && !lockStore.isLocked()) {
+                lockStore.lock();
+                Toast.makeText(this, "Storage locked instantly", Toast.LENGTH_SHORT).show();
+            }
+            finish();
+            return;
+        }
+
+        if (lockStore.isLocked()) {
             startActivity(new Intent(this, UnlockActivity.class)
                     .putExtra(UnlockActivity.OPEN_AFTER_UNLOCK, true));
         } else {

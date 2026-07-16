@@ -18,7 +18,7 @@
     <string name="password_error_mismatch">The passwords do not match</string>
     <string name="password_error_wrong">Wrong password</string>
 
-    <string name="password_input_message">Type your SecLock password to unlock the SecLock Storage</string>
+    <string name="password_input_message">Type your Password to access the vault.</string>
     <string name="password_input_action">Unlock</string>
     <string name="password_input_biometric_message">Authenticate to unlock the SecLock Storage</string>
     <string name="password_input_biometric_fallback">Use password</string>
@@ -53,6 +53,8 @@
     <string name="shortcut_config_long">Configuration</string>
     <string name="shortcut_config_short">Configure</string>
     <string name="shortcut_config_disabled">Configuration (disabled)</string>
+    <string name="shortcut_quick_lock_long">Quick lock</string>
+    <string name="shortcut_quick_lock_short">Quick lock</string>
 
     <string name="configuration_label">Configuration</string>
     <string name="configuration_shortcut">Show shortcut in app list</string>
@@ -62,5 +64,8 @@
     <string name="configuration_storage_lock">Lock storage access</string>
     <string name="configuration_storage_unlock">Unlock storage access</string>
     <string name="configuration_storage_unlock_biometric">Allow storage unlock with biometric access</string>
-    <string name="configuration_storage_lock_auto">Automatically lock access after 15 minutes</string>
+    <string name="configuration_storage_lock_auto">Automatically lock access</string>
+    <string name="configuration_storage_lock_auto_delay">Lock delay: %d minutes</string>
+    <string name="configuration_lock_immediately">Immediately</string>
+    <string name="configuration_credits">Originally created by &lt;b>2bllw8&lt;/b>.<br/>Forked and Modified by &lt;b>Abdullah Bari&lt;/b>.<br/>Version %1$s</string>
 </resources>
